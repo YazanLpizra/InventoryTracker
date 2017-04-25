@@ -2,6 +2,6 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'my-app',
-  template: `<part-form></part-form>`,
+  templateUrl: 'app/app.component.html'
 })
 export class AppComponent  { name = 'Angular'; }

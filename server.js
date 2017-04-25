@@ -18,7 +18,6 @@ app.use(bodyParser.json());
 app.use(morgan('dev'));
 
 mongoose.connect('mongodb://localhost/parts');
-
 var router = express.Router();
 
 app.use('/api', partsApi);
