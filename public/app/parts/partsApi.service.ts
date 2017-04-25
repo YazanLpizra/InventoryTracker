@@ -35,11 +35,20 @@ export class PartsApiService {
     }
 
     updatePart(part: Part) {
+        let headers = new Headers({ 'Content-Type': 'application/json' });
+        let options = new RequestOptions({ headers: headers });
 
+        console.log('part to update: ',JSON.stringify(part,null,2))
+
+        return this.http.put(`${this.partsApiUrl}/${part._id}`, { part }, options)
+            .map(this.extractData)
+            .catch(this.handleError);
     }
 
     deletePart(_id: String) {
-
+        return this.http.delete(`${this.partsApiUrl}/${_id}`)
+            .map(this.extractData)
+            .catch(this.handleError);
     }
 
     private extractData(res: Response) {

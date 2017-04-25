@@ -9,7 +9,7 @@ import { AppComponent } from './app.component';
 // import { PartFormComponent } from './parts/part-form.component';
 
 @NgModule({
-  imports: [BrowserModule, FormsModule, PartsModule,CoreModule],
+  imports: [BrowserModule, FormsModule, PartsModule, CoreModule],
   declarations: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   bootstrap: [AppComponent]

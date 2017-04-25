@@ -11,10 +11,11 @@ import { PartsApiService } from './partsApi.service';
 })
 export class PartFormComponent implements OnInit {
 
-    model = new Part('ajsdhjlam561', '0001', 'fuel pump');
+    model = new Part('', '0001', 'fuel pump');
     submitted = false;
     isEditing = false;
     editingIndex = -1;
+    deletingIndex = -1;
     partsList: Part[];
     errorMessage: string;
 
@@ -26,17 +27,22 @@ export class PartFormComponent implements OnInit {
     }
 
     ngOnInit() {
-        // this.getParts();
+        this.getParts();
     }
 
     onSubmit() {
-        console.log('on submit');
+        console.log('on submit: model: ' + JSON.stringify(this.model, null, 2));
         this.submitted = true;
         if (this.isEditing) {
-            this.partsList[this.editingIndex] = this.model;
+            this.partsApiService
+                .updatePart(this.model)
+                .subscribe(
+                part => this.partsList[this.editingIndex] = part,
+                error => this.errorMessage = error
+                );
             this.editingIndex = -1;
         } else {
-            this.partsList.push(this.model);
+            this.addPart(this.model);
         }
         this.model = new Part('', '', '');
     }
@@ -54,20 +60,33 @@ export class PartFormComponent implements OnInit {
     }
 
     getParts() {
-        // this.partsApiService
-        //     .getParts().subscribe(
-        //     parts => this.partsList = parts,
-        //     error => this.errorMessage = <any>error
-        //     );
+        this.partsApiService
+            .getParts().subscribe(
+            parts => this.partsList = parts,
+            error => this.errorMessage = <any>error
+            );
     }
 
-    addHero(part: Part) {
-    //     if (!part) { return; }
-    //     this.partsApiService.createPart(part)
-    //     .subscribe(
-    //         _part => this.partsList.push(_part),
-    //         error => this.errorMessage = <any>error
-    //  );
+    addPart(part: Part) {
+        if (!part) { return; }
+        console.log('part to save: ', JSON.stringify(part, null, 2))
+        this.partsApiService.createPart(part)
+            .subscribe(
+            _part => this.partsList.push(_part),
+            error => this.errorMessage = <any>error
+            );
+    }
 
+    deletePart(part: Part) {
+        if (!part) { return; }
+        console.log('part to delete: ', JSON.stringify(part, null, 2))
+        this.deletingIndex = this.partsList.indexOf(part);
+        this.partsApiService.deletePart(part._id)
+            .subscribe(
+            _part => {
+                this.partsList.splice(this.deletingIndex,1);
+            },
+            error => this.errorMessage = <any>error
+            );
     }
 }
