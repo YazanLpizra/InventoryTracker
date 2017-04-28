@@ -1,3 +1,5 @@
+!.gitignore
+
 system-config.js*
 node_modules
 jspm_packages
@@ -5,5 +7,8 @@ bower_components
 aot/*
 dist/*
 yarn.lock
-public/app/**/*.js
-public/app/**/*.js.map
+
+#compiled Typescript and Angular files
+public/dist/*
+public/dist/**/*
+

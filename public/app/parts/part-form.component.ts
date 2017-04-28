@@ -14,7 +14,7 @@ export class PartFormComponent implements OnInit {
     model = new Part('', '0001', 'fuel pump');
     submitted = false;
     isEditing = false;
-    editingIndex = -1;
+    editingIndex = 4;
     deletingIndex = -1;
     partsList: Part[];
     errorMessage: string;
@@ -37,10 +37,13 @@ export class PartFormComponent implements OnInit {
             this.partsApiService
                 .updatePart(this.model)
                 .subscribe(
-                part => this.partsList[this.editingIndex] = part,
-                error => this.errorMessage = error
+                part => {
+                    console.log("recieved updated part: " + part);
+                    this.partsList[this.editingIndex] = part;
+                },
+                error => this.errorMessage = error,
+                () => this.editingIndex = -1
                 );
-            this.editingIndex = -1;
         } else {
             this.addPart(this.model);
         }
