@@ -11,8 +11,9 @@ let partsApi = require('./server/routes/partsAPI.js');
 let app = express();
 let port = process.env.PORT || process.argv[2] || 8080;
 
-app.use(express.static(path.join(__dirname, '/public')));
-app.use(express.static(path.join(__dirname, '/node_modules')));
+app.use(express.static(path.join(__dirname, '/public/dist')));
+app.use(express.static(path.join(__dirname, '/public/')));
+app.use(express.static(path.join(__dirname, '/.')));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(morgan('dev'));
@@ -23,7 +24,7 @@ var router = express.Router();
 app.use('/api', partsApi);
 
 app.get('/', (req, res) => {
-    res.sendFile('index.html');
+    res.sendFile(path.join(__dirname,'/public/index.html'));
 });
 
 app.use('/api', router);

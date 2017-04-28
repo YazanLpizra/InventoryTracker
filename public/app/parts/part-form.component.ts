@@ -62,7 +62,7 @@ export class PartFormComponent implements OnInit {
     getParts() {
         this.partsApiService
             .getParts().subscribe(
-            parts => this.partsList = parts,
+            _parts => this.appendParts(_parts),
             error => this.errorMessage = <any>error
             );
     }
@@ -72,9 +72,9 @@ export class PartFormComponent implements OnInit {
         console.log('part to save: ', JSON.stringify(part, null, 2))
         this.partsApiService.createPart(part)
             .subscribe(
-            _part => this.partsList.push(_part),
-            error => this.errorMessage = <any>error
-            );
+            _part => this.appendParts(_part),
+            error => this.errorMessage = <any>error,
+        );
     }
 
     deletePart(part: Part) {
@@ -84,9 +84,19 @@ export class PartFormComponent implements OnInit {
         this.partsApiService.deletePart(part._id)
             .subscribe(
             _part => {
-                this.partsList.splice(this.deletingIndex,1);
+                this.partsList.splice(this.deletingIndex, 1);
             },
             error => this.errorMessage = <any>error
             );
+    }
+
+    private appendParts(_part: any) {
+        if (_part instanceof Array) {
+            for (let i = 0; i < _part.length; i++) {
+                this.partsList.push(_part[i]);
+            }
+        } else {
+            this.partsList.push(_part);
+        }
     }
 }

@@ -52,6 +52,7 @@ export class PartsApiService {
     }
 
     private extractData(res: Response) {
+        console.log(res.json().message)
         return res.json().data || {};
     }
 
@@ -61,7 +62,7 @@ export class PartsApiService {
         if (error instanceof Response) {
             const body = error.json() || '';
             const err = body.error || JSON.stringify(body);
-            errMsg = `${error.status} - ${error.statusText || ''} - ${err}`;
+            errMsg = `${error.status} - ${error.statusText || ''}: ${body.message} - ${err}`;
         } else {
             errMsg = error.message ? error.message : error.toString();
         }

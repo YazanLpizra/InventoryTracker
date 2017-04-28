@@ -1,0 +1,14 @@
+<h2>Part fields</h2>
+<form [formGroup]="partDefineForm" novalidate (ngSubmit)="save(partDefineForm.value, partDefineForm.valid)">
+
+    <input formControlName="name">
+
+    <div [formGroupName]="i">
+        <fields-form [group]="partDefineForm.controls.fields.controls[i]">
+        </fields-form>
+    </div>
+
+    <input formControlName="description">
+
+    <button type="submit">Submit</button>
+</form>
