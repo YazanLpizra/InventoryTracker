@@ -1,6 +1,7 @@
 !.gitignore
+!systemjs.config.js
+!systemjs.config.extras.js
 
-system-config.js*
 node_modules
 jspm_packages
 bower_components

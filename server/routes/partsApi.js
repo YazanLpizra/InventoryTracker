@@ -8,21 +8,34 @@ router.use((req, res, next) => {
     console.log('passing through parts API middleware');
     console.log(new Date().toISOString() + ": Request body: " + JSON.stringify(req.body.part, null, 2))
     console.log(new Date().toISOString() + ": Request params: " + JSON.stringify(req.params, null, 2))
+
+    try {
+        global.gc();
+    } catch (e) {
+        console.log("You must run program with 'node --expose-gc server.js' or 'npm start'");
+        process.exit();
+    }
+
+    //2. Output Heap stats
+    var heapUsed = process.memoryUsage().heapUsed;
+    console.log("Program is using " + heapUsed + " bytes of Heap.")
+
     next();
 });
 
 router.route('/parts')
     .get((req, res) => {
         Part.find((err, parts) => {
-            if (err) res.json({ error: err, message: "Parts list was not able to be retrieved" });
-            JSON.stringify({ data: parts, message: "Parts fetched succesfully" });
+            if (err) return res.json({ error: err, message: "Parts list was not able to be retrieved" });
             res.json({ data: parts, message: "Parts fetched succesfully" });
         });
     })
     .post((req, res) => {
         let part = new Part();
 
-        Object.keys(req.body.part).forEach(function(key, index) {
+        console.log(JSON.stringify(req.body.part))
+
+        Object.keys(req.body.part).forEach(function (key, index) {
             // key: the name of the object key
             // index: the ordinal position of the key within the object 
             if (req.body.part[key]) {
@@ -31,25 +44,28 @@ router.route('/parts')
         });
 
         part.save((err) => {
-            if (err) res.json({ error: err, message: "Part could not be created" });
-            console.log(JSON.stringify({ data: part, message: "Part created" }))
+            if (err) return res.json({ error: err, message: "Part could not be created" });
             res.json({ data: part, message: "Part created" });
         });
     });
 
-router.route('/parts/:partId')
+router.route('/parts/:partNumber')
     .get((req, res) => {
-        Part.findById(req.params.partId, (err, part) => {
-            if (err) res.json({ error: err, message: "Part could not be fetched" });
-            JSON.stringify({ data: part, message: "Part fetched successfully" });
+        // Part.findById(req.params.partId, (err, part) => {
+        //     if (err) return res.json({ error: err, message: "Part could not be fetched" });
+        //     JSON.stringify({ data: part, message: "Part fetched successfully" });
+        //     res.json({ data: part, message: "Part fetched successfully" });
+        // });
+        Part.findOne({ 'partNumber': req.params.partNumber }, (err, part) => {
+            if (err) return res.json({ error: err, message: "Part could not be fetched" });
             res.json({ data: part, message: "Part fetched successfully" });
         });
     })
     .put((req, res) => {
         Part.findById(req.params.partId, (err, part) => {
-            if (err) res.json({ error: err, message: "Part to be updated could not be fetched" });
+            if (err) return res.json({ error: err, message: "Part to be updated could not be fetched" });
 
-            Object.keys(req.body.part).forEach(function(key, index) {
+            Object.keys(req.body.part).forEach(function (key, index) {
                 // key: the name of the object key
                 // index: the ordinal position of the key within the object 
                 if (req.body.part[key]) {
@@ -58,18 +74,16 @@ router.route('/parts/:partId')
             });
 
             part.save((err) => {
-                if (err) res.json({ error: err, message: "Part could not be updated in the database" });
-                JSON.stringify({ data: part, message: 'Part updated successfully' });
+                if (err) return res.json({ error: err, message: "Part could not be updated in the database" });
                 res.json({ data: part, message: 'Part updated successfully' });
             });
         });
     })
     .delete((req, res) => {
         Part.remove({ _id: req.params.partId }, (err, part) => {
-            if (err) res.json({ error: err, message: "Part could not be deleted" });
-            JSON.stringify({ data: part, message: 'Part successfully deleted' });
+            if (err) return res.json({ error: err, message: "Part could not be deleted" });
             res.json({ data: part, message: 'Part successfully deleted' });
         });
-    })
+    });
 
 module.exports = router;

@@ -1,12 +1,13 @@
 import { NgModule } from '@angular/core';
+import { } from '@angular/';
 import { BrowserModule } from '@angular/platform-browser';
 
-import {DefaultRequestOptions} from './default-request-options.service'
+import { PartApiService } from './services/partApi.service';
+import { SharedDataService } from './services/shared-data.service';
 
 @NgModule({
   imports: [BrowserModule],
   declarations: [],
-  providers: [DefaultRequestOptions],
-  exports: []
+  providers: [PartApiService, SharedDataService],
 })
-export class CoreModule { }
+export class MyCoreModule { }

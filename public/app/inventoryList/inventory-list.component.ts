@@ -1,15 +1,17 @@
 'use strict';
 
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 
-import { Part } from './part';
-import { PartsApiService } from './partsApi.service';
+import { Part } from '../core/models/Part';
+import { PartApiService } from '../core/services/partApi.service';
+import { SharedDataService } from '../core/services/shared-data.service';
 
 @Component({
     selector: 'part-form',
-    templateUrl: 'app/parts/part-form.component.html'
+    templateUrl: 'app/inventoryList/inventory-list.component.html'
 })
-export class PartFormComponent implements OnInit {
+export class InventoryListComponent implements OnInit {
 
     model = new Part('', '0001', 'fuel pump');
     submitted = false;
@@ -19,11 +21,12 @@ export class PartFormComponent implements OnInit {
     partsList: Part[];
     errorMessage: string;
 
-    private partsApiService: PartsApiService;
-
-    constructor(_partsApiService: PartsApiService) {
+    constructor(
+        private partsApiService: PartApiService,
+        private sharedDataService: SharedDataService,
+        private route: ActivatedRoute,
+        private router: Router) {
         this.partsList = [];
-        this.partsApiService = _partsApiService;
     }
 
     ngOnInit() {
@@ -55,9 +58,9 @@ export class PartFormComponent implements OnInit {
         this.editingIndex = this.partsList.indexOf(part);
         console.log(this.editingIndex);
 
-        this.model._id = part._id;
-        this.model.partId = part.partId;
         this.model.partName = part.partName;
+        this.model.partNumber = part.partNumber;
+        this.model.description = part.description;
 
         this.isEditing = true;
     }
@@ -84,13 +87,18 @@ export class PartFormComponent implements OnInit {
         if (!part) { return; }
         console.log('part to delete: ', JSON.stringify(part, null, 2))
         this.deletingIndex = this.partsList.indexOf(part);
-        this.partsApiService.deletePart(part._id)
+        this.partsApiService.deletePart(part.partNumber)
             .subscribe(
             _part => {
                 this.partsList.splice(this.deletingIndex, 1);
             },
             error => this.errorMessage = <any>error
             );
+    }
+
+    reroute(newRoute: string[], part: Part) {
+        this.sharedDataService.setPart(part);
+        this.router.navigate(newRoute);
     }
 
     private appendParts(_part: any) {

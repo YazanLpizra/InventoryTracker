@@ -4,10 +4,10 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 
-import { Part } from './part';
+import { Part } from '../models/Part';
 
 @Injectable()
-export class PartsApiService {
+export class PartApiService {
     private partsApiUrl = 'api/parts';
 
     constructor(private http: Http) {
@@ -38,9 +38,9 @@ export class PartsApiService {
         let headers = new Headers({ 'Content-Type': 'application/json' });
         let options = new RequestOptions({ headers: headers });
 
-        console.log('part to update: ',JSON.stringify(part,null,2))
+        console.log('part to update: ', JSON.stringify(part, null, 2));
 
-        return this.http.put(`${this.partsApiUrl}/${part._id}`, { part }, options)
+        return this.http.put(`${this.partsApiUrl}/${part.partNumber}`, { part }, options)
             .map(this.extractData)
             .catch(this.handleError);
     }
@@ -52,7 +52,7 @@ export class PartsApiService {
     }
 
     private extractData(res: Response) {
-        console.log("Extracting data: "+JSON.stringify(res.json()))
+        console.log('Extracting data: ' + JSON.stringify(res.json()));
         return res.json().data || {};
     }
 
