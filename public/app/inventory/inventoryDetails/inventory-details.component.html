@@ -30,6 +30,7 @@
             <tr>
                 <th>Unit Id</th>
                 <th>Manufacturer Id</th>
+                <th>Purchase Cost</th>
                 <th>Price</th>
                 <th>Mileage</th>
                 <th>Stocked Date</th>
@@ -43,6 +44,7 @@
             <tr *ngFor="let unit of part.units">
                 <td>{{unit.unitId}}</td>
                 <td>{{unit.manufacturerId}}</td>
+                <td>{{unit.purchaseCost | currency:'USD':true:'1.2-2'}}</td>
                 <td>{{unit.price | currency:'USD':true:'1.2-2'}}</td>
                 <td>{{unit.mileage}}</td>
                 <td>{{unit.stockedDate}}</td>

@@ -1,0 +1,23 @@
+<div class="container">
+    <h1>Create New Inventory Item</h1>
+    <form #partForm="ngForm">
+        <div class="form-group">
+            <label for="partId">Part Number</label>
+            <input type="text" class="form-control" id="partNumber" [(ngModel)]="model.partNumber" name="partNumbers" required>
+        </div>
+
+        <div class="form-group">
+            <label for="partName">Part Name</label>
+            <input type="text" class="form-control" id="partName" [(ngModel)]="model.partName" name="partName" required>
+        </div>
+
+        <div class="form-group">
+            <label for="partName">Description</label>
+            <input type="text" class="form-control" id="description" [(ngModel)]="model.description" name="description">
+        </div>
+
+        <button type="button" class="btn btn-success" [disabled]="!partForm.form.valid" (click)="onSubmit();partForm.reset()">
+            Create
+        </button>
+    </form>
+</div>

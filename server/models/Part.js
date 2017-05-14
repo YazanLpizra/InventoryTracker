@@ -15,6 +15,7 @@ var PartSchema = new mongoose.Schema({
     units: [{
         unitId: String,
         manufacturerId: String,
+        purchaseCost:Number,
         price: Number,
         mileage: Number,
         stockedDate: Date,

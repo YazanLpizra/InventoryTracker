@@ -6,7 +6,6 @@ import { RouterModule } from '@angular/router';
 import { HttpModule, JsonpModule } from '@angular/http';
 
 import { InventoryListComponent } from './inventory-list.component';
-import { PartApiService } from '../core/services/partApi.service';
 
 @NgModule({
   imports: [BrowserModule, FormsModule, HttpModule, JsonpModule, RouterModule],

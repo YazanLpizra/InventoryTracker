@@ -1,0 +1,33 @@
+<!--<button type="button" class="btn btn-primary" (click)="reroute(['create'])">Create New Part</button>-->
+
+<div *ngIf="partsList.length > 0" class="container">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Part Number</th>
+                <th>Part Name</th>
+                <th>Description</th>
+                <th>Compatible Cars</th>
+                <th>Quantity in Stock</th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody *ngIf="partsList[0]">
+            <tr *ngFor="let part of partsList">
+                <td>{{part.partNumber}}</td>
+                <td>{{part.partName}}</td>
+                <td>{{part.description}}</td>
+                <td>{{part.compatibleCars}}</td>
+                <td>{{part.units.length}}</td>
+                <!--<td><a type="button" class="btn btn-secondary" [routerLink]="[part.partNumber,'details']">Details</a></td>-->
+                <td><button type="button" class="btn btn-secondary" (click)="reroute([part.partNumber,'details'], part)">Details</button></td>
+                <td><button type="button" class="btn btn-secondary" (click)="reroute([part.partNumber,'edit'], part)">Edit</button></td>
+                <td><button type="button" class="btn btn-secondary" (click)="reroute([part.partNumber,'delete'], part)">Delete</button></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<router-outlet></router-outlet>

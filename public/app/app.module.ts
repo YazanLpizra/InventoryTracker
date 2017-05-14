@@ -2,29 +2,28 @@ import { NgModule, CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/cor
 import { BrowserModule, } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
 
-import { InventoryListModule } from './inventoryList/inventory-list.module';
-import { InventoryDetailsModule } from './inventoryDetails/inventory-details.module';
+import { InventoryModule } from './inventory/inventory.module';
 import { MyCoreModule } from './core/core.module';
 import { PageNotFoundModule } from './pageNotFound/page-not-found.module';
 
 import { AppComponent } from './app.component';
-import { appRoutes } from './app.routes';
+import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
   imports: [
     // Imported modules
     BrowserAnimationsModule,
     BrowserModule,
-    RouterModule.forRoot(appRoutes),
     FormsModule,
 
     // Custom modules
-    InventoryDetailsModule,
     MyCoreModule,
-    InventoryListModule,
-    PageNotFoundModule
+    PageNotFoundModule,
+    InventoryModule,
+
+    //app-level routing
+    AppRoutingModule
   ],
   declarations: [
     AppComponent

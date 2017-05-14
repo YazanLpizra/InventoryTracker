@@ -10,13 +10,11 @@ var core_1 = require("@angular/core");
 var platform_browser_1 = require("@angular/platform-browser");
 var animations_1 = require("@angular/platform-browser/animations");
 var forms_1 = require("@angular/forms");
-var router_1 = require("@angular/router");
-var inventory_list_module_1 = require("./inventoryList/inventory-list.module");
-var inventory_details_module_1 = require("./inventoryDetails/inventory-details.module");
+var inventory_module_1 = require("./inventory/inventory.module");
 var core_module_1 = require("./core/core.module");
 var page_not_found_module_1 = require("./pageNotFound/page-not-found.module");
 var app_component_1 = require("./app.component");
-var app_routes_1 = require("./app.routes");
+var app_routing_module_1 = require("./app-routing.module");
 var AppModule = (function () {
     function AppModule() {
     }
@@ -28,13 +26,13 @@ AppModule = __decorate([
             // Imported modules
             animations_1.BrowserAnimationsModule,
             platform_browser_1.BrowserModule,
-            router_1.RouterModule.forRoot(app_routes_1.appRoutes),
             forms_1.FormsModule,
             // Custom modules
-            inventory_details_module_1.InventoryDetailsModule,
             core_module_1.MyCoreModule,
-            inventory_list_module_1.InventoryListModule,
-            page_not_found_module_1.PageNotFoundModule
+            page_not_found_module_1.PageNotFoundModule,
+            inventory_module_1.InventoryModule,
+            //app-level routing
+            app_routing_module_1.AppRoutingModule
         ],
         declarations: [
             app_component_1.AppComponent
