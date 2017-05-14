@@ -25,14 +25,14 @@ export class InventoryListComponent implements OnInit {
         private router: Router
     ) {
         this.partsList = [];
-        this.sharedDataService.getPart().subscribe(
-            _part => {
-                if (_part) {
-                    console.log('InventoryListComponent: getting single part');
-                    this.partsList.push(_part);
-                }
-            }
-        );
+        // this.sharedDataService.getPart().subscribe(
+        //     _part => {
+        //         if (_part) {
+        //             console.log('InventoryListComponent: getting single part');
+        //             this.partsList.push(_part);
+        //         }
+        //     }
+        // );
     }
 
     ngOnInit() {

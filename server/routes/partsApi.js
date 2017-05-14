@@ -62,16 +62,33 @@ router.route('/parts/:partNumber')
         });
     })
     .put((req, res) => {
-        Part.findById(req.params.partId, (err, part) => {
-            if (err) return res.json({ error: err, message: "Part to be updated could not be fetched" });
+        Part.findOne({ partNumber: req.params['partNumber'] }, (err, part) => {
+            if (err) return res.json({
+                error: err,
+                message: "Part to be updated could not be fetched"
+            });
+
+            if (!part) return res.json({
+                error: 'Part not found',
+                message: 'Could not retrieve part to update. Part not found with partNumber = ' + req.params['partNumber']
+            });
+
+            console.log('Part number:', req.params['partNumber'])
+            console.log('req part:', JSON.stringify(req.body.part, null, 2));
+            console.log('db part:', JSON.stringify(part, null, 2));
 
             Object.keys(req.body.part).forEach(function (key, index) {
                 // key: the name of the object key
                 // index: the ordinal position of the key within the object 
+
+
                 if (req.body.part[key]) {
                     part[key] = req.body.part[key];
                 }
             });
+
+            console.log('updated part:', JSON.stringify(part, null, 2));
+            
 
             part.save((err) => {
                 if (err) return res.json({ error: err, message: "Part could not be updated in the database" });
