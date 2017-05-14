@@ -19,5 +19,8 @@
         <button type="button" class="btn btn-success" [disabled]="!partForm.form.valid" (click)="onSubmit();partForm.reset()">
             Submit
         </button>
+        <button type="button" class="btn btn-success"  (click)="backToList()">
+            Cancel
+        </button>
     </form>
 </div>

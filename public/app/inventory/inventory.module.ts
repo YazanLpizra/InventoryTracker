@@ -6,6 +6,7 @@ import { InventoryRoutingModule } from './inventory-routing.module';
 
 import { InventoryListModule } from './inventoryList/inventory-list.module';
 import { CreateInventoryModule } from './createInventory/create-inventory.module';
+import { DeleteInventoryModule } from './deleteInventory/delete-inventory.module';
 import { EditInventoryModule } from './editInventory/edit-inventory.module';
 import { InventoryDetailsModule } from './inventoryDetails/inventory-details.module';
 
@@ -23,7 +24,8 @@ import { InventoryComponent } from './inventory.component';
         InventoryListModule,
         InventoryDetailsModule,
         CreateInventoryModule,
-        EditInventoryModule
+        EditInventoryModule,
+        DeleteInventoryModule
     ],
     declarations: [InventoryComponent],
     exports: [InventoryComponent]

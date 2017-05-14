@@ -51,13 +51,16 @@ router.route('/parts')
 
 router.route('/parts/:partNumber')
     .get((req, res) => {
-        // Part.findById(req.params.partId, (err, part) => {
-        //     if (err) return res.json({ error: err, message: "Part could not be fetched" });
-        //     JSON.stringify({ data: part, message: "Part fetched successfully" });
-        //     res.json({ data: part, message: "Part fetched successfully" });
-        // });
         Part.findOne({ 'partNumber': req.params.partNumber }, (err, part) => {
-            if (err) return res.json({ error: err, message: "Part could not be fetched" });
+            if (err) return res.json({
+                error: err,
+                message: "Part could not be fetched"
+            });
+
+            if (!part) return res.json({
+                error: 'Part not found',
+                message: 'Could not retrieve part. Part not found with partNumber = ' + req.params['partNumber']
+            });
             res.json({ data: part, message: "Part fetched successfully" });
         });
     })
@@ -73,10 +76,6 @@ router.route('/parts/:partNumber')
                 message: 'Could not retrieve part to update. Part not found with partNumber = ' + req.params['partNumber']
             });
 
-            console.log('Part number:', req.params['partNumber'])
-            console.log('req part:', JSON.stringify(req.body.part, null, 2));
-            console.log('db part:', JSON.stringify(part, null, 2));
-
             Object.keys(req.body.part).forEach(function (key, index) {
                 // key: the name of the object key
                 // index: the ordinal position of the key within the object 
@@ -87,9 +86,6 @@ router.route('/parts/:partNumber')
                 }
             });
 
-            console.log('updated part:', JSON.stringify(part, null, 2));
-            
-
             part.save((err) => {
                 if (err) return res.json({ error: err, message: "Part could not be updated in the database" });
                 res.json({ data: part, message: 'Part updated successfully' });
@@ -97,8 +93,17 @@ router.route('/parts/:partNumber')
         });
     })
     .delete((req, res) => {
-        Part.remove({ _id: req.params.partId }, (err, part) => {
-            if (err) return res.json({ error: err, message: "Part could not be deleted" });
+        Part.remove({ partNumber: req.params['partNumber'] }, (err, part) => {
+            if (err) return res.json({
+                error: err,
+                message: "Part could not be deleted"
+            });
+
+            if (!part) return res.json({
+                error: 'Part not found',
+                message: 'Could not retrieve part to delete. Part not found with partNumber = ' + req.params['partNumber']
+            });
+
             res.json({ data: part, message: 'Part successfully deleted' });
         });
     });

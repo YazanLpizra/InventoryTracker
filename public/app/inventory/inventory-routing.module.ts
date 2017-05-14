@@ -6,6 +6,7 @@ import { InventoryListComponent } from './inventoryList/inventory-list.component
 import { InventoryDetailsComponent } from './inventoryDetails/inventory-details.component';
 import { CreateInventoryComponent } from './createInventory/create-inventory.component';
 import { EditInventoryComponent } from './editInventory/edit-inventory.component';
+import { DeleteInventoryComponent } from './deleteInventory/delete-inventory.component';
 
 const inventoryRoutes: Routes = [
     {
@@ -36,11 +37,11 @@ const inventoryRoutes: Routes = [
                 component: EditInventoryComponent,
                 data: { title: 'Edit Inventory Item' }
             },
-            // {
-            //     path: ':partNumber/delete',
-            //     component: DeleteInventoryComponent,
-            //     data: { title: 'Delete Inventory Item' }
-            // }
+            {
+                path: ':partNumber/delete',
+                component: DeleteInventoryComponent,
+                data: { title: 'Delete Inventory Item' }
+            }
         ]
     }
 ];

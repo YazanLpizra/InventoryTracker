@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { Validators, FormBuilder, FormGroup } from '@angular/forms';
+// import { Validators, FormBuilder, FormGroup } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { Part } from '../../core/models/Part';
 import { SharedDataService } from '../../core/services/shared-data.service';
@@ -13,9 +14,11 @@ export class CreateInventoryComponent {
     private model: Part;
 
     constructor(
-        private formBuilder: FormBuilder,
+        // private formBuilder: FormBuilder,
         private sharedDataService: SharedDataService,
-        private partApiService: PartApiService
+        private partApiService: PartApiService,
+        private route: ActivatedRoute,
+        private router: Router
     ) {
         this.model = new Part();
     }
@@ -34,5 +37,10 @@ export class CreateInventoryComponent {
             );
 
         this.model = new Part();
+        this.backToList();
+    }
+
+    backToList() {
+        this.router.navigate(['list'], { relativeTo: this.route.parent });
     }
 }
