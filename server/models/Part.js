@@ -20,7 +20,8 @@ var PartSchema = new mongoose.Schema({
         mileage: Number,
         stockedDate: Date,
         soldDate: Date,
-        soldStatus: ['in_stock', 'ordered', 'shipped', 'no_stock'],
+        stockStatus: ['STOCKED','SOLD','JUNKED'],
+        shippingStatus: ['NA','ORDERED','SHIPPED','DELIVERED'],
         condition: String
     }]
 });

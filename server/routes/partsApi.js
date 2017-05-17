@@ -9,16 +9,16 @@ router.use((req, res, next) => {
     console.log(new Date().toISOString() + ": Request body: " + JSON.stringify(req.body.part, null, 2))
     console.log(new Date().toISOString() + ": Request params: " + JSON.stringify(req.params, null, 2))
 
-    try {
-        global.gc();
-    } catch (e) {
-        console.log("You must run program with 'node --expose-gc server.js' or 'npm start'");
-        process.exit();
-    }
+    // try {
+    //     global.gc();
+    // } catch (e) {
+    //     console.log("You must run program with 'node --expose-gc server.js' or 'npm start'");
+    //     process.exit();
+    // }
 
-    //2. Output Heap stats
-    var heapUsed = process.memoryUsage().heapUsed;
-    console.log("Program is using " + heapUsed + " bytes of Heap.")
+    // //2. Output Heap stats
+    // var heapUsed = process.memoryUsage().heapUsed;
+    // console.log("Program is using " + heapUsed + " bytes of Heap.")
 
     next();
 });

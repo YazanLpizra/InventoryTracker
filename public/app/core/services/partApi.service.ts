@@ -52,7 +52,7 @@ export class PartApiService {
     }
 
     private extractData(res: Response) {
-        console.log('Extracting data: ' + JSON.stringify(res.json()));
+        // console.log('Extracting data: ' + JSON.stringify(res.json()));
         return res.json().data || {};
     }
 

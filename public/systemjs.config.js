@@ -31,7 +31,8 @@
       // other libraries
       'rxjs': 'npm:rxjs',
       'angular-in-memory-web-api': 'npm:angular-in-memory-web-api/bundles/in-memory-web-api.umd.js',
-      'primeng': 'npm:primeng'//<-- add this
+      'primeng': 'npm:primeng',
+      'ng2-inline-editor':'npm:ng2-inline-editor'
     },
     // packages tells the System loader how to load when no filename and/or no extension
     packages: {
