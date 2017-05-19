@@ -19,6 +19,11 @@ const inventoryRoutes: Routes = [
         component: InventoryComponent,
         children: [
             {
+                path: '',
+                pathMatch: 'full',
+                redirectTo: 'list'
+            },
+            {
                 path: 'list',
                 component: InventoryListComponent,
                 data: { title: 'Inventory Items List' }

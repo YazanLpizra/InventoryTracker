@@ -6,7 +6,7 @@ import { PageNotFoundComponent } from './pageNotFound/page-not-found.component';
 const appRoutes: Routes = [
     {
         path: '',
-        redirectTo: '/inventory/list',
+        redirectTo: '/inventory',
         pathMatch: 'full'
     },
     { path: '**', component: PageNotFoundComponent }
