@@ -1,0 +1,65 @@
+<br>
+
+<div class="container">
+    <h3>Are you sure you want to delete?</h3>
+    <button type="button" class="btn btn-primary" (click)="backToList()">No</button>
+    <button type="button" class="btn btn-danger" (click)="delete()">Yes</button>
+</div>
+
+<br>
+
+<div *ngIf="part != null" class="container">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Part Number</th>
+                <th>Part Name</th>
+                <th>Description</th>
+                <th>Compatible Cars</th>
+                <th>Quantity in Stock</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{part.partNumber}}</td>
+                <td>{{part.partName}}</td>
+                <td>{{part.description}}</td>
+                <td>{{part.compatibleCars}}</td>
+                <td>{{part.units.length}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div *ngIf="part && part.units.length > 0" class="container">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Unit Id</th>
+                <th>Manufacturer Id</th>
+                <th>Purchase Cost</th>
+                <th>Price</th>
+                <th>Mileage</th>
+                <th>Stocked Date</th>
+                <th>Sold Date</th>
+                <th>Status</th>
+                <th>Condition</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let unit of part.units">
+                <td>{{unit.unitId}}</td>
+                <td>{{unit.manufacturerId}}</td>
+                <td>{{unit.purchaseCost | currency:'USD':true:'1.2-2'}}</td>
+                <td>{{unit.price | currency:'USD':true:'1.2-2'}}</td>
+                <td>{{unit.mileage}}</td>
+                <td>{{unit.stockedDate}}</td>
+                <td>{{unit.soldDate}}</td>
+                <td>{{unit.status}}</td>
+                <td>{{unit.condition}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

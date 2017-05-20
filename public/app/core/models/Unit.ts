@@ -4,8 +4,9 @@ export class Unit {
     public price: number;
     public mileage: number;
     public stockedDate: Date;
+    public stockStatus: string = '';
     public soldDate: Date;
-    public soldStatus: ['in_stock', 'ordered', 'shipped', 'no_stock'];
+    public shippingStatus: string = '';
     public condition: String;
 
     constructor() {

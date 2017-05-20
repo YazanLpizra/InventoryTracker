@@ -19,8 +19,8 @@ export class PartApiService {
             .catch(this.handleError);
     }
 
-    getPart(_id: String) {
-        return this.http.get(`${this.partsApiUrl}/${_id}`)
+    getPart(partNumber: String) {
+        return this.http.get(`${this.partsApiUrl}/${partNumber}`)
             .map(this.extractData)
             .catch(this.handleError);
     }
@@ -45,14 +45,14 @@ export class PartApiService {
             .catch(this.handleError);
     }
 
-    deletePart(_id: String) {
-        return this.http.delete(`${this.partsApiUrl}/${_id}`)
+    deletePart(partNumber: String) {
+        return this.http.delete(`${this.partsApiUrl}/${partNumber}`)
             .map(this.extractData)
             .catch(this.handleError);
     }
 
     private extractData(res: Response) {
-        console.log('Extracting data: ' + JSON.stringify(res.json()));
+        // console.log('Extracting data: ' + JSON.stringify(res.json()));
         return res.json().data || {};
     }
 

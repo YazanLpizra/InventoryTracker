@@ -1,3 +1,4 @@
+<!--Part general details-->
 <div *ngIf="part != null" class="container">
     <table class="table">
         <thead>
@@ -17,45 +18,151 @@
                 <td>{{part.description}}</td>
                 <td>{{part.compatibleCars}}</td>
                 <td>{{part.units.length}}</td>
-                <td><button type="button" class="btn btn-secondary" (click)="editPart(part)">Edit</button></td>
-                <td><button type="button" class="btn btn-secondary" (click)="deletePart(part)">Delete</button></td>
+                <td>
+                    <button type="button" class="btn btn-secondary" (click)="reroute([part.partNumber,'edit'], part)">
+                        Edit Part
+                    </button>
+                </td>
+                <td>
+                    <button type="button" class="btn btn-secondary" (click)="reroute([part.partNumber,'delete'], part)">
+                        Delete Part
+                    </button>
+                </td>
             </tr>
         </tbody>
     </table>
 </div>
 
-<div *ngIf="part && part.units.length > 0" class="container">
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Unit Id</th>
-                <th>Manufacturer Id</th>
-                <th>Purchase Cost</th>
-                <th>Price</th>
-                <th>Mileage</th>
-                <th>Stocked Date</th>
-                <th>Sold Date</th>
-                <th>Status</th>
-                <th>Condition</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let unit of part.units">
-                <td>{{unit.unitId}}</td>
-                <td>{{unit.manufacturerId}}</td>
-                <td>{{unit.purchaseCost | currency:'USD':true:'1.2-2'}}</td>
-                <td>{{unit.price | currency:'USD':true:'1.2-2'}}</td>
-                <td>{{unit.mileage}}</td>
-                <td>{{unit.stockedDate}}</td>
-                <td>{{unit.soldDate}}</td>
-                <td>{{unit.status}}</td>
-                <td>{{unit.condition}}</td>
+<!--Details Grid-->
+<div *ngIf="part.units" class="container">
+    <div>
+        <button pButton type="button" (click)="toggleStacked()" style="margin-bottom:10px" label="Toggle Stacked" icon="fa-list">
+        </button>
+        <input #gb type="text" placeholder="Global search">
+    </div>
 
-                <td><a class="btn btn-secondary" [routerLink]="['inventory',part.partNumber,'details']">Details</a></td>
-                <td><button type="button" class="btn btn-secondary" (click)="editPart(part)">Edit</button></td>
-                <td><button type="button" class="btn btn-secondary" (click)="deletePart(part)">Delete</button></td>
-            </tr>
-        </tbody>
-    </table>
+
+    <p-dataTable [value]="part.units" selectionMode="single" [(selection)]="selectedUnit" [sortMode]="multiple" (onRowSelect)="onRowSelect($event)"
+        [loading]="loading" [reorderableColumns]="true" [paginator]="true" [stacked]="stacked" rows="15" [responsive]="true"
+        [globalFilter]="gb" #dt>
+        <!--Header-->
+        <p-header>In Stock Part Units</p-header>
+
+        <!--Body-->
+        <p-column field="unitId" header="Unit Id" [sortable]="true"></p-column>
+        <p-column field="manufacturerId" header="Manufacturer Id"></p-column>
+        <p-column field="purchaseCost" header="Purchase Cost">
+            <ng-template let-unit="rowData" pTemplate="body">
+                {{unit.purchaseCost | currency:'USD':true:'1.2-2'}}
+            </ng-template>
+        </p-column>
+        <p-column field="price" header="Price">
+            <ng-template let-unit="rowData" pTemplate="body">
+                {{unit.price | currency:'USD':true:'1.2-2'}}
+            </ng-template>
+        </p-column>
+        <p-column field="mileage" header="Mileage"></p-column>
+        <p-column field="condition" header="Condition"></p-column>
+        <p-column field="stockedDate" header="Stocked Date">
+            <ng-template let-col let-unit="rowData" let-ri="rowIndex" pTemplate="body">
+                <span>{{unit[col.field] | date}}</span>
+            </ng-template>
+        </p-column>
+        <p-column field="stockStatus" header="Stock Status" [filter]="true" [style]="{'overflow':'visible'}" filterMatchMode="equals">
+            <ng-template pTemplate="filter" let-col>
+                <p-dropdown (onChange)="dt.filter($event.value,col.field,col.filterMatchMode)" [options]="stockStatusesFilterOptions" [style]="{'width':'100%'}"
+                    styleClass="ui-column-filter">
+                </p-dropdown>
+            </ng-template>
+        </p-column>
+        <p-column field="soldDate" header="Sold Date">
+            <ng-template let-col let-unit="rowData" let-ri="rowIndex" pTemplate="body">
+                <span>{{unit[col.field] | date}}</span>
+            </ng-template>
+        </p-column>
+        <p-column field="shippingStatus" header="Shipping Status" [filter]="true" [style]="{'overflow':'visible'}" filterMatchMode="equals">
+            <ng-template pTemplate="filter" let-col>
+                <p-dropdown (onChange)="dt.filter($event.value,col.field,col.filterMatchMode)" [options]="shippingStatusesFilterOptions"
+                    [style]="{'width':'100%'}" styleClass="ui-column-filter">
+                </p-dropdown>
+            </ng-template>
+        </p-column>
+        <!--Footer-->
+        <p-footer>
+            <div class="ui-helper-clearfix" style="width:100%">
+                <button type="button" pButton icon="fa-plus" style="float:left" (click)="showDialogToAdd()" label="Add"></button>
+            </div>
+        </p-footer>
+    </p-dataTable>
 </div>
+
+<!--Add/Delete dialog-->
+<p-dialog header="Unit Details" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true">
+    <div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="unit">
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-4"><label for="unitId">Unit Id</label></div>
+            <div class="ui-grid-col-8"><input pInputText id="unitId" [(ngModel)]="unit.unitId" required/></div>
+        </div>
+
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-4"><label for="manufacturerId">Manufacturer Id</label></div>
+            <div class="ui-grid-col-8"><input pInputText id="manufacturerId" [(ngModel)]="unit.manufacturerId" required/></div>
+        </div>
+
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-4"><label for="price">Purchase Cost</label></div>
+            <div class="ui-grid-col-8"><input pInputText id="purchaseCost" [(ngModel)]="unit.purchaseCost" required/></div>
+        </div>
+
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-4"><label for="price">Price</label></div>
+            <div class="ui-grid-col-8"><input pInputText id="price" [(ngModel)]="unit.price" required/></div>
+        </div>
+
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-4"><label for="mileage">Mileage</label></div>
+            <div class="ui-grid-col-8"><input pInputText id="mileage" [(ngModel)]="unit.mileage" required/></div>
+        </div>
+
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-4"><label for="condition">Condition</label></div>
+            <div class="ui-grid-col-8"><input pInputText id="condition" [(ngModel)]="unit.condition" required/></div>
+        </div>
+
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-4"><label for="stockedDate">Stocked Date</label></div>
+            <div class="ui-grid-col-8">
+                <p-calendar [(ngModel)]="stockedDate" [showIcon]="true" required></p-calendar>
+            </div>
+        </div>
+
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-4"><label for="soldDate">Stock Status</label></div>
+            <div class="ui-grid-col-8">
+                <p-dropdown [options]="stockStatuses" [(ngModel)]="unit.stockStatus" placeholder="Select a status" required>
+                </p-dropdown>
+            </div>
+        </div>
+
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-4"><label for="soldDate">Sold Date</label></div>
+            <div class="ui-grid-col-8">
+                <p-calendar [(ngModel)]="soldDate" [showIcon]="true"></p-calendar>
+            </div>
+        </div>
+
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-4"><label for="soldDate">Shipping Status</label></div>
+            <div class="ui-grid-col-8">
+                <p-dropdown [options]="shippingStatuses" [(ngModel)]="unit.shippingStatus" placeholder="Select a status"></p-dropdown>
+            </div>
+        </div>
+
+    </div>
+    <p-footer>
+        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+            <button type="button" pButton icon="fa-close" (click)="delete()" label="Delete"></button>
+            <button type="button" pButton icon="fa-check" (click)="save()" label="Save"></button>
+        </div>
+    </p-footer>
+</p-dialog>

@@ -18,12 +18,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(morgan('dev'));
 
-mongoose.connect('mongodb://localhost/parts');
+mongoose.connect('mongodb://localhost/partsDb');
 var router = express.Router();
 
 app.use('/api', partsApi);
 
-app.get('/', (req, res) => {
+app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname,'/public/index.html'));
 });
 

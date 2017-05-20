@@ -25,31 +25,19 @@ export class InventoryListComponent implements OnInit {
         private router: Router
     ) {
         this.partsList = [];
-        this.sharedDataService.getPart().subscribe(
-            _part => {
-                if (_part) {
-                    console.log('InventoryListComponent: getting single part');
-                    this.partsList.push(_part);
-                }
-            }
-        );
+        // this.sharedDataService.getPart().subscribe(
+        //     _part => {
+        //         if (_part) {
+        //             console.log('InventoryListComponent: getting single part');
+        //             this.partsList.push(_part);
+        //         }
+        //     }
+        // );
     }
 
     ngOnInit() {
         this.getParts();
     }
-
-    // editPart(part: Part) {
-    //     console.log(this.editingIndex);
-    //     this.editingIndex = this.partsList.indexOf(part);
-    //     console.log(this.editingIndex);
-
-    //     this.model.partName = part.partName;
-    //     this.model.partNumber = part.partNumber;
-    //     this.model.description = part.description;
-
-    //     this.isEditing = true;
-    // }
 
     getParts() {
         this.partsApiService
@@ -63,19 +51,6 @@ export class InventoryListComponent implements OnInit {
             error => this.errorMessage = <any>error
             );
     }
-
-    // deletePart(part: Part) {
-    //     if (!part) { return; }
-    //     console.log('part to delete: ', JSON.stringify(part, null, 2))
-    //     this.deletingIndex = this.partsList.indexOf(part);
-    //     this.partsApiService.deletePart(part.partNumber)
-    //         .subscribe(
-    //         _part => {
-    //             this.partsList.splice(this.deletingIndex, 1);
-    //         },
-    //         error => this.errorMessage = <any>error
-    //         );
-    // }
 
     reroute(newRoute: string[], part: Part) {
         if (part) {
