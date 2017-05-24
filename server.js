@@ -6,10 +6,18 @@ let morgan = require('morgan');
 let mongoose = require('mongoose');
 let path = require('path');
 
-let partsApi = require('./server/routes/partsAPI.js');
+var env = process.env.NODE_ENV || 'dev';
 
+let config = require('./server/config/config.js')[env];
+let logger = require('./server/logger.js')(config);
+let partsApi = require('./server/routes/partsAPI.js');
+let LogParams = require('./server/models/LogParams.js');
 let app = express();
-let port = process.env.PORT || process.argv[2] || 8080;
+
+let logParams = new LogParams('Server start', 'server.js global');
+logger.log(logParams);
+
+let port = config.server.port;
 
 app.use(express.static(path.join(__dirname, '/public/dist')));
 app.use(express.static(path.join(__dirname, '/public/')));
@@ -18,17 +26,21 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(morgan('dev'));
 
-mongoose.connect('mongodb://localhost/partsDb');
+mongoose.connect(config.database.uri);
 var router = express.Router();
 
 app.use('/api', partsApi);
 
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname,'/public/index.html'));
+    res.sendFile(path.join(__dirname, '/public/index.html'));
 });
 
 app.use('/api', router);
 
 app.listen(port, () => {
-    console.log("App listening on port " + port);
+    console.log('App listening on port ' + port)
+
+    logParams.message = "App started";
+    logParams.meta.port = port;
+    logger.log(logParams);
 });

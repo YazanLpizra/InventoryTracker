@@ -1,12 +1,17 @@
-module.exports.ShippingStatusEnum = {
+'use strict';
+
+const shippingStatusEnum = {
     NA: 'NA',
     ORDERED: 'ORDERED',
     SHIPPED: 'SHIPPED',
     DELIVERED: 'DELIVERED'
-}
+};
 
-module.exports.StockStatusEnum = {
+const stockStatusEnum = {
     STOCKED: 'STOCKED',
     JUNKED: 'JUNKED',
     SOLD: 'SOLD'
-}
+};
+
+module.exports.StockStatusEnum = stockStatusEnum;
+module.exports.ShippingStatusEnum = shippingStatusEnum;

@@ -1,5 +1,5 @@
 <!--Part general details-->
-<div *ngIf="part != null" class="container">
+<div *ngIf="part" class="container">
     <table class="table">
         <thead>
             <tr>
@@ -34,7 +34,7 @@
 </div>
 
 <!--Details Grid-->
-<div *ngIf="part.units" class="container">
+<div *ngIf="part && part.units" class="container">
     <div>
         <button pButton type="button" (click)="toggleStacked()" style="margin-bottom:10px" label="Toggle Stacked" icon="fa-list">
         </button>
